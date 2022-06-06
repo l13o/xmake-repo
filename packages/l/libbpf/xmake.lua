@@ -4,10 +4,10 @@ package("libbpf")
 
     set_urls("https://github.com/libbpf/libbpf/archive/$(version).tar.gz",
              "https://github.com/libbpf/libbpf.git")
-    add_versions("latest", "master")
-    add_versions("v0.7.0", "2cd2d03f63242c048a896179398c68d2dbefe3d6")
-    add_versions("v0.6.1", "56794b31eea0a6245f194b5915e3ed867be144fe")
-    add_versions("v0.6.0", "4884bf3dbd08762564de71608da9941b50184f8b")
+    add_versions("v0.8.0", "f4480242651a93c101ece320030f6b2b9b437f622f807719c13cb32569a6d65a")
+    add_versions("v0.7.0", "5083588ce5a3a620e395ee1e596af77b4ec5771ffc71cff2af49dfee38c06361")
+    add_versions("v0.6.1", "ce3a8eb32d85ac48490256597736d8b27e0a5e947a0731613b7aba6b4ae43ac0")
+    add_versions("v0.6.0", "c951c231c51a272b737d33d32517525a91467f409745921a4303192f3aef4103")
 
     add_deps("elfutils", "zlib")
 
@@ -37,7 +37,7 @@ package("libbpf")
                 end
         ]])
         local configs = {}
-        configs.kind = "static" -- default
+        configs.kind = "static"
         if package:config("shared") then
             configs.kind = "shared"
         elseif package:config("pic") ~= false then
@@ -48,5 +48,15 @@ package("libbpf")
 
     on_test(function (package)
         assert(package:has_cfuncs("bpf_object__open", {includes = "bpf/libbpf.h"}))
-    end)
 
+        if package:version():ge("v0.7.0") then
+            assert(package:has_cfuncs("bpf_xdp_attach", {includes = "bpf/libbpf.h"}))
+            assert(package:has_cfuncs("libbpf_probe_bpf_helper", {includes = "bpf/libbpf.h"}))
+        end
+
+        if package:version():ge("v0.8.0") then
+            assert(package:has_cfuncs("bpf_map__autocreate", {includes = "bpf/libbpf.h"}))
+            assert(package:has_cfuncs("bpf_object__open_subskeleton", {includes = "bpf/libbpf.h"}))
+            assert(package:has_cfuncs("libbpf_register_prog_handler", {includes = "bpf/libbpf.h"}))
+        end
+    end)

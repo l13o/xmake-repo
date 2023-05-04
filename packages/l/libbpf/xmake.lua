@@ -9,7 +9,7 @@ package("libbpf")
     add_versions("v0.6.1", "ce3a8eb32d85ac48490256597736d8b27e0a5e947a0731613b7aba6b4ae43ac0")
     add_versions("v0.6.0", "c951c231c51a272b737d33d32517525a91467f409745921a4303192f3aef4103")
 
-    add_deps("elfutils", "zlib")
+    add_deps("libelf", "zlib")
 
     add_includedirs("include", "include/uapi")
 
@@ -24,10 +24,10 @@ package("libbpf")
     on_install("linux", "android", function (package)
         io.writefile("xmake.lua", [[
             add_rules("mode.debug", "mode.release")
-            add_requires("elfutils", "zlib")
+            add_requires("libelf", "zlib")
             target("bpf")
                 set_kind("$(kind)")
-                add_packages("elfutils", "zlib")
+                add_packages("libelf", "zlib")
                 add_files("src/*.c")
                 add_includedirs("include")
                 add_includedirs("include/uapi", { public = true })

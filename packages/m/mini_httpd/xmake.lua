@@ -2,6 +2,7 @@ package("mini_httpd")
     set_homepage("https://acme.com/software/mini_httpd")
     set_description("Small HTTP server")
 
+    add_urls("https://deb.debian.org/debian/pool/main/m/mini-httpd/mini-httpd_$(version).orig.tar.gz")
     add_urls("https://acme.com/software/mini_httpd/mini_httpd-$(version).tar.gz")
     add_versions("1.30", "9c4481802af8dde2e164062185c279e9274525c3af93d014fdc0b80cf30bca6e")
 
